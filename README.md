@@ -79,8 +79,11 @@ tests/                 pytest suite
 
 - **Data:** [KPDN PriceCatcher via OpenDOSM](https://open.dosm.gov.my/data-catalogue/pricecatcher), CC BY 4.0.
 - **Libraries:** Streamlit, pandas, PyArrow, SciPy (HiGHS MILP), Plotly.
-- **AI assistance:** Claude (Anthropic) was used heavily as an AI
-  pair-programmer throughout — data pipeline, recipe-to-item mapping, the
-  ILP formulation, UI and tests were drafted with it. I directed the problem
-  choice and product design, reviewed and ran every part, and can explain
-  how each piece works. *(Edit this line to match exactly what you did.)*
+- **AI assistance:** This project was built in a single session with Claude
+  (Anthropic) acting as the engineer, directed by me. I chose to enter, set
+  the brief (research the hackathon, propose a winning idea, then build it),
+  and made the product calls along the way; Claude researched the hackathon
+  and the OpenDOSM dataset, proposed JimatMakan, and generated the data
+  pipeline, recipe-to-item mapping, ILP optimiser, Streamlit UI, tests, and
+  this write-up. I reviewed, ran, and own the result, and can walk through
+  how every module works (see `EXPLAIN.md`).

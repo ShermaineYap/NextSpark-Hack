@@ -294,6 +294,7 @@ def consolidate_stores(plan: Plan, latest: pd.DataFrame, max_stores: int = 2) ->
         chosen["premise"] = pinfo.loc[best, "premise"]
         chosen["premise_type"] = pinfo.loc[best, "premise_type"]
         chosen["unit_price"] = sub.loc[chosen["item_code"], best].values
+        chosen["extra"] = False
         assigned.append(chosen)
         remaining = remaining[~here]
     if not remaining.empty:   # anything no chosen store stocks: cheapest anywhere
@@ -303,8 +304,9 @@ def consolidate_stores(plan: Plan, latest: pd.DataFrame, max_stores: int = 2) ->
         rem["premise"] = pinfo.loc[rem["premise_code"], "premise"].values
         rem["premise_type"] = pinfo.loc[rem["premise_code"], "premise_type"].values
         rem["unit_price"] = dist_min.reindex(rem["item_code"]).values
+        rem["extra"] = True          # not stocked at any chosen stop
         assigned.append(rem)
     out = pd.concat(assigned, ignore_index=True)
     out["cost"] = (out["unit_price"] * out["units"]).round(2)
-    out = out.sort_values(["premise", "pantry", "cost"], ascending=[True, True, False]).reset_index(drop=True)
+    out = out.sort_values(["extra", "premise", "pantry", "cost"], ascending=[True, True, True, False]).reset_index(drop=True)
     return out, float(out["cost"].sum().round(2))

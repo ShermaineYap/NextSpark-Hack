@@ -24,6 +24,7 @@ You tell JimatMakan your budget, how many people, how many days, what you don't 
 Result for a typical run: 10 meals for 2 people in Petaling for RM56, at RM2.82 per person per meal, saving RM12–15 versus paying average prices.
 
 ### How I built it
+I built this with Claude (Anthropic) as the engineer, directed by me — see *Tools & AI assistance* below for the honest split. The architecture:
 - **Data:** `scripts/fetch_data.py` downloads the OpenDOSM monthly parquet files and lookup tables, filters to Klang Valley (≈560k price observations, 672 shops, latest 24 Oct 2026) and commits a 1.2 MB snapshot so the app runs offline.
 - **Price engine** (`jimat/pricing.py`): per shop, keep the last 14 days; per item, cheapest and median price in the district; trend = last 7 days vs. the 30 days before; a unit parser that understands "30 biji", "5 X 79g", "1 liter".
 - **Recipe bank** (`jimat/recipes.py`): 29 dishes with quantities for 2, each ingredient tied to an item code.
@@ -49,7 +50,7 @@ python, streamlit, pandas, scipy, plotly, pyarrow, opendosm, pricecatcher
 ## Tools, resources & AI assistance (required by the rules)
 - Data: KPDN PriceCatcher via OpenDOSM, CC BY 4.0.
 - Libraries: Streamlit, pandas, PyArrow, SciPy (HiGHS), Plotly, pytest.
-- AI: Claude (Anthropic) as a pair-programmer across the data pipeline, recipe mapping, optimiser, UI and tests. **State honestly what you directed vs. what was generated** — the rules say you must be able to explain the project; read `jimat/planner.py` and `jimat/pricing.py` before submitting.
+- AI: Claude (Anthropic), used as the engineer for the whole build, directed by me. I set the brief and made product decisions; Claude researched the hackathon and dataset, proposed the idea, and generated the data pipeline, recipe mapping, optimiser, UI, tests and write-up. I reviewed and ran every part and can explain how it works.
 
 ## Links
 - Repo: https://github.com/ShermaineYap/NextSpark-Hack
@@ -77,6 +78,6 @@ Open one dish's expander to show ingredient → shop → unit price.
 "Before you go, it tells you what's moved." Show the sawi +33% alert and the price chart.
 
 **1:50–2:00 — Close**
-"Open data, an integer programme, and 29 recipes my family actually cooks. JimatMakan — what can I cook this week?"
+"Open data, an integer programme, and 29 everyday Malaysian recipes. JimatMakan — what can I cook this week?"
 
 Recording tips: 1440×900 window, record with OBS/Loom, speak slower than feels natural, no music louder than your voice, upload to YouTube as *Unlisted* and test the link in an incognito window.

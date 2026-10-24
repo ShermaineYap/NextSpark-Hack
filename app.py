@@ -173,25 +173,39 @@ with tab_plan:
 
 # ---------------------------------------------------------------- shop tab
 with tab_shop:
-    stores = best_trip["premise"].unique().tolist()
-    st.markdown(f"**{len(stores)} stop{'s' if len(stores) > 1 else ''}** for the whole week. "
-                f"Cheapest-anywhere total would be RM{plan.total_cost:.2f} across "
+    main_trip = best_trip[~best_trip["extra"]]
+    extras = best_trip[best_trip["extra"]]
+    stores = main_trip["premise"].unique().tolist()
+    st.markdown(f"**{len(stores)} stop{'s' if len(stores) > 1 else ''}** for the whole week"
+                + (f", plus {len(extras)} item{'s' if len(extras) > 1 else ''} they don't stock." if len(extras) else ".")
+                + f" Cheapest-anywhere total would be RM{plan.total_cost:.2f} across "
                 f"{shopping_list(plan)['premise'].nunique()} shops — this trip costs RM{best_total:.2f}.")
     pinfo = premises.set_index("premise_code")
-    for s in stores:
-        part = best_trip[best_trip["premise"] == s]
-        code = int(part["premise_code"].iloc[0])
-        addr = pinfo.loc[code, "address"] if code in pinfo.index else ""
-        ptype = part["premise_type"].iloc[0]
-        st.markdown(f'<div class="jm-store"><h4>{s} <span class="jm-pill">{ptype}</span></h4>'
-                    f'<div class="addr">{addr}</div><div><b>RM{part["cost"].sum():.2f}</b> · {len(part)} items</div></div>',
-                    unsafe_allow_html=True)
+
+    def _table(part):
         show = part[["item", "amount", "amount_unit", "unit_price", "priced_unit", "cost", "pantry"]].copy()
         show["Amount"] = show["amount"].map(lambda v: f"{v:g}") + " " + show["amount_unit"]
         show["Price"] = "RM" + show["unit_price"].map(lambda v: f"{v:.2f}") + " / " + show["priced_unit"]
         show["Pantry"] = show["pantry"].map(lambda b: "✓" if b else "")
         st.dataframe(show.rename(columns={"item": "Item", "cost": "Cost (RM)"})[["Item", "Amount", "Price", "Cost (RM)", "Pantry"]],
                      hide_index=True, use_container_width=True)
+
+    for s in stores:
+        part = main_trip[main_trip["premise"] == s]
+        code = int(part["premise_code"].iloc[0])
+        addr = pinfo.loc[code, "address"] if code in pinfo.index else ""
+        ptype = part["premise_type"].iloc[0]
+        st.markdown(f'<div class="jm-store"><h4>{s} <span class="jm-pill">{ptype}</span></h4>'
+                    f'<div class="addr">{addr}</div><div><b>RM{part["cost"].sum():.2f}</b> · {len(part)} items</div></div>',
+                    unsafe_allow_html=True)
+        _table(part)
+    if len(extras):
+        st.markdown(f'<div class="jm-store" style="border-left-color:#C8472B"><h4>Not stocked at your stop{"s" if len(stores) > 1 else ""}</h4>'
+                    f'<div class="addr">Cheapest nearby shop shown per item · RM{extras["cost"].sum():.2f}</div></div>',
+                    unsafe_allow_html=True)
+        ex = extras.copy()
+        ex["item"] = ex["item"] + "  →  " + ex["premise"]
+        _table(ex)
     st.markdown('<div class="small">Pantry ✓ = staples (rice, oil, sauces) costed only for the amount used — '
                 'you probably already have them. Fresh items are costed at the amount the recipes need.</div>',
                 unsafe_allow_html=True)
