@@ -6,7 +6,7 @@ OpenDOSM). Tell it your budget, how many people, how many days and what you
 don't eat — it optimises a week of everyday Malaysian dishes against today's
 prices near you, then turns that into a shopping trip to one or two shops.
 
-Built solo for **NextSpark Hacks 2026** (21–26 Oct 2026).
+Built for **NextSpark Hacks 2026** (21–26 Oct 2026). **Live demo: https://jimatmakan.streamlit.app**
 
 ![Weekly plan](screenshots/weekly-plan.png)
 

@@ -54,7 +54,9 @@ python, streamlit, pandas, scipy, plotly, pyarrow, opendosm, pricecatcher
 
 ## Links
 - Repo: https://github.com/ShermaineYap/NextSpark-Hack
-- Live demo: *(deploy on Streamlit Community Cloud → share.streamlit.io → New app → this repo, main file `app.py`; takes ~3 minutes)*
+- Live demo: https://jimatmakan.streamlit.app
+- Devpost draft (4/5 steps done): https://devpost.com/submit-to/31805-nextspark-hacks/manage/submissions/1260463-jimatmakan-what-can-i-cook-this-week-for-rm50/finalization
+- Demo video file: `jimatmakan-demo.mp4` (1:35, narrated) — upload to YouTube as Unlisted, paste URL in Project details → Video demo link
 
 ---
 
